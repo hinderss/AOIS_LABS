@@ -2,6 +2,11 @@
 {
     public class Float
     {
+        public static int EXPONENT_BIAS = 127;
+        public static int EXPONENT_SIZE = 8;
+
+        public static int MANTISSA_SIZE = 23;
+
         public string _value;
 
         public bool Sign
@@ -39,20 +44,20 @@
                 exponent = -1 * count;
             }
 
-            string exponentBinary = SBinary.DecimalToBinary(exponent + 127).Substring(1); 
+            string exponentBinary = SBinary.DecimalToBinary(exponent + EXPONENT_BIAS).Substring(1); 
             string mantissa = binaryIntPart.Substring(1) + binaryFractionalPart; 
 
-            _value = sign + exponentBinary.PadLeft(8, '0') + mantissa.PadRight(23, '0'); 
+            _value = sign + exponentBinary.PadLeft(EXPONENT_SIZE, '0') + mantissa.PadRight(MANTISSA_SIZE, '0'); 
         }
 
 
         public string Exponent
         {
-            get { return _value.Substring(1, 8); }
+            get { return _value.Substring(1, EXPONENT_SIZE); }
         }
         public string Mantissa
         {
-            get { return _value.Substring(9); }
+            get { return _value.Substring(EXPONENT_SIZE + 1); }
         }
         public string MantissaTwosComplement
         {
@@ -131,8 +136,8 @@
 
             result = Float.TwosComplement(sign, result);
 
-            var binaryExponent = Binary.DecimalToBinary(exponent1).PadLeft(8, '0');
-            var roundedMantissa = result.Substring(1, 22) + '0'; //?
+            var binaryExponent = Binary.DecimalToBinary(exponent1).PadLeft(EXPONENT_SIZE, '0');
+            var roundedMantissa = result.Substring(1, MANTISSA_SIZE - 1) + '0';
 
             return new Float(sign + binaryExponent + roundedMantissa);
         }
@@ -140,7 +145,7 @@
         {
             string binary = "";
 
-            while (number != 0 && binary.Length < 23)
+            while (number != 0 && binary.Length < MANTISSA_SIZE)
             {
                 number *= 2;
                 if (number >= 1)
@@ -162,7 +167,7 @@
             get
             {
                 var sign = Sign ? -1f : 1f;
-                float exponent = Binary.BinaryToDecimal(Exponent) - 127;
+                float exponent = Binary.BinaryToDecimal(Exponent) - EXPONENT_BIAS;
                 float mantissa = 1;
 
                 int l = Mantissa.Length;

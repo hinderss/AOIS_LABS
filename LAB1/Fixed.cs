@@ -23,14 +23,16 @@
             get 
             {
                 int s = Sign ? -1 : 1;
-                return s * Binary.BinaryToDecimal(_integerPart) + Binary.BinaryToFractional(_fractionalPart);
+                float i = (int)Binary.BinaryToDecimal(_integerPart);
+                float f = Binary.BinaryToFractional(_fractionalPart);
+                return s * i + s * f;
             }
         }
 
         public override string ToString()
         {
             return
-            "Число:" + ((this.Sign) ? '-' : "") +
+            "Число:" + 
             GetSystemFloat.ToString() +
             "\n" +
             "Двоичное представление: [" + ((this.Sign) ? '1' : '0') + " " +

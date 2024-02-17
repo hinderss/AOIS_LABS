@@ -7,14 +7,14 @@ namespace LAB1
     {
         static void Main(string[] args)
         {
-            int a = -250;
+            int a = -10;
 
-            int b = 249;
+            int b = 9;
 
             CalculateIntegers(a, b);
 
-            float p1 = 1000.1f;
-            float p2 = 1.3f;
+            float p1 = 23.5f;
+            float p2 = 1.75f;
 
             Float floatA = new Float(p1);
             Float floatB = new Float(p2);
